@@ -1,0 +1,177 @@
+$numOfCarousel: 3;
+$width: 100%;
+$height: 100%;
+$carouselMarginWidth: 5px;
+$borderWidth: 5px;
+$borderType: solid;
+$borderColor: #33f;
+$activeBorderColor: #3f3;
+$previewTitleCushionColor: rgba(255, 255, 255, 0.3);
+$thumbnailCoverBackgroundColor: rgba(51, 51, 255, 0.5);
+$activeThumbnailCoverBackgroundColor: rgba(51, 51, 255, 0);
+
+/* height / width */
+$controlButtonsHeight: 50px;
+$controlButtonsWidth: 100%;
+$prevButtonHeight: 50px;
+$prevButtonWidth: 50px;
+$nextButtonHeight: 50px;
+$nextButtonWidth: 50px;
+$carouselHeight: 100%;
+$carouselWidth: 100%;
+$previewFrameHeight: 400px;
+$previewFrameWidth: $carouselWidth;
+$previewHeight: $previewFrameHeight;
+$previewWidth: $previewFrameWidth;
+$thumbnailWrapperHeight: 100px;
+$thumbnailWrapperWidth: $carouselWidth;
+$thumbnailHeight: 100px;
+$thumbnailWidth: $thumbnailWrapperWidth;
+
+/* z-index */
+$ZIndexOfPreview: -1;
+$ZIndexOfPreviewFrame: 0;
+$ZIndexOfControlButtons: 9;
+
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  position: relative;
+  width: $width;
+  height: $height;
+  margin: 0;
+  display: flex;
+}
+
+.carousel {
+  position: relative;
+  height: $carouselHeight;
+  width: $carouselWidth;
+  margin: $carouselMarginWidth;
+
+
+  .control-buttons {
+    position: absolute;
+    top: $previewHeight / 2 - $borderWidth; // border-width一つ分だけ調整
+    height: $controlButtonsHeight;
+    width: $controlButtonsWidth;
+    z-index: $ZIndexOfControlButtons;
+
+    .prev {
+      cursor: pointer;
+      height: $prevButtonHeight;
+      width: $prevButtonWidth;
+      display: inline-block;
+      background: none no-repeat center/contain;
+    }
+
+    .next {
+      cursor: pointer;
+      height: $nextButtonHeight;
+      width: $nextButtonWidth;
+      display: inline-block;
+      background: none no-repeat center/contain;
+      float: right;
+    }
+  }
+
+  .preview-frame {
+    position: relative;
+    overflow: hidden;
+    height: $previewFrameHeight;
+    width: $previewFrameWidth;
+    border: $borderWidth $borderType $borderColor;
+    border-bottom: none;
+    z-index: $ZIndexOfPreviewFrame;
+
+
+    .preview {
+      position: absolute;
+      height: $previewHeight;
+      width: $previewWidth;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      transition: left 0.3s ease-out;
+      z-index: $ZIndexOfPreview;
+
+      &.to-left {
+        left: -100%;
+      }
+
+      &.to-right {
+        left: 100%;
+      }
+
+      .preview-label-cushion {
+        position: relative;
+        background: $previewTitleCushionColor;
+        top: -100%;
+        height: 100%;
+        width: 100%;
+      }
+
+      .preview-label {
+        position: relative;
+        top: -200%;
+        text-align: center;
+        font-size: 5vw;
+      }
+
+      .preview-image {
+        position: relative;
+        height: $previewHeight;
+        width: $previewWidth;
+        object-fit: contain;
+      }
+    }
+  }
+
+  .thumbnail-frame {
+    position: relative;
+    height: $thumbnailWrapperHeight;
+    width: $thumbnailWrapperWidth;
+    display: flex;
+
+    .thumbnail {
+      height: 100%;
+      width: 100%; // カルーセルの個数はうち決めできるが、各カルーセルに含まれる要素数はうち決めできないのでflexの自動調整に任せる
+      background: none no-repeat center/cover;
+      cursor: pointer;
+
+      .thumbnail-cover {
+        //position: relative;
+        height: 100%;
+        width: 100%;
+        border: $borderWidth $borderType $borderColor;
+        background: $thumbnailCoverBackgroundColor;
+
+        .thumbnail-label {
+          height: 100%;
+          width: 100%;
+          line-height: 14em; //margin-topのような役割で、かつcoverに重なるように
+          text-align: center;
+        }
+      }
+
+      &.active {
+        pointer-events: none;
+
+        .thumbnail-cover {
+          background: $activeThumbnailCoverBackgroundColor;
+          border: $borderWidth $borderType $activeBorderColor;
+        }
+      }
+    }
+  }
+
+}
+
